@@ -7,6 +7,7 @@ import com.websitemonitor.observer.ChangeSubject;
 
 import java.util.*;
 
+// only manages observers and triggers checks
 public class WebsiteMonitor implements ChangeSubject {
 
     private List<Subscription>      subscriptionList   = new ArrayList<>();
@@ -16,19 +17,19 @@ public class WebsiteMonitor implements ChangeSubject {
     // ChangeSubject
 
     @Override
-    public void addObserver(ChangeObserver observer) {
+    public void attachObserver(ChangeObserver observer) {
         observers.add(observer);
     }
 
     @Override
-    public void removeObserver(ChangeObserver observer) {
+    public void detachObserver(ChangeObserver observer) {
         observers.remove(observer);
     }
 ////////////////////////////////////////////////////////////////////////
     @Override
     public void notifyObservers(Subscription sub, User owner, String changeInfo) {
         for (ChangeObserver observer : observers) {
-            observer.onChangeDetected(sub, owner, changeInfo);
+            observer.update(sub, owner, changeInfo);
         }
     }
 
@@ -37,6 +38,11 @@ public class WebsiteMonitor implements ChangeSubject {
     public void addSubscription(Subscription sub, User owner) {
         subscriptionList.add(sub);
         subscriptionOwners.put(sub.getSubscriptionId(), owner);
+    }
+
+    public void removeSubscription(Subscription sub) {
+        subscriptionList.remove(sub);
+        subscriptionOwners.remove(sub.getSubscriptionId());
     }
 
     public void checkForUpdates() {
@@ -48,10 +54,6 @@ public class WebsiteMonitor implements ChangeSubject {
                 sub.updateLastChecked(new Date());
             }
         }
-    }
-
-    private String fetchContent(String url) {
-        return "sample content from " + url;
     }
 
     public boolean detectChange(String url, String newContent) {

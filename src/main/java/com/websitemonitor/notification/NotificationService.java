@@ -23,15 +23,11 @@ public class NotificationService implements ChangeObserver {
     // ChangeObserver implementation - update
 
     @Override
-    public void onChangeDetected(Subscription sub, User owner, String changeInfo) {
+    public void update(Subscription sub, User owner, String changeInfo) {
         sendNotification(owner, sub, changeInfo);
     }
 
     //Notification logic
-
-    public String formatMessage(String url, String changeInfo) {
-        return "Update on [" + url + "]: " + changeInfo;
-    }
 
     public void sendNotification(User user, Subscription sub, String changeInfo) {
         String message = formatMessage(sub.getUrl(), changeInfo);
@@ -41,5 +37,9 @@ public class NotificationService implements ChangeObserver {
         } else {
             System.out.println("No handler for channel: " + sub.getChannel());
         }
+    }
+
+    public String formatMessage(String url, String changeInfo) {
+        return "Update on [" + url + "]: " + changeInfo;
     }
 }

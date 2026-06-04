@@ -1,0 +1,16 @@
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/Main.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/comparator/ContentComparator.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/comparator/HTMLComparator.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/comparator/SizeComparator.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/comparator/TextComparator.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/controller/SubscriptionController.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/domain/Subscription.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/domain/User.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/handler/EmailHandler.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/handler/PushHandler.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/handler/SMSHandler.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/monitor/WebsiteMonitor.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/notification/ChannelHandler.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/notification/NotificationService.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/observer/ChangeObserver.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/observer/ChangeSubject.java

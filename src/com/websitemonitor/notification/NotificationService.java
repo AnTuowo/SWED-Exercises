@@ -3,12 +3,15 @@ package com.websitemonitor.notification;
 import com.websitemonitor.domain.Subscription;
 import com.websitemonitor.domain.User;
 import com.websitemonitor.handler.EmailHandler;
-import com.websitemonitor.handler.SMSHandler;
 import com.websitemonitor.handler.PushHandler;
+import com.websitemonitor.handler.SMSHandler;
+import com.websitemonitor.observer.ChangeObserver;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationService {
+public class NotificationService implements ChangeObserver {
+
     private Map<String, ChannelHandler> channelHandlers = new HashMap<>();
 
     public NotificationService() {
@@ -16,6 +19,15 @@ public class NotificationService {
         channelHandlers.put("sms",   new SMSHandler());
         channelHandlers.put("push",  new PushHandler());
     }
+
+    // ChangeObserver implementation - update
+
+    @Override
+    public void onChangeDetected(Subscription sub, User owner, String changeInfo) {
+        sendNotification(owner, sub, changeInfo);
+    }
+
+    //Notification logic
 
     public String formatMessage(String url, String changeInfo) {
         return "Update on [" + url + "]: " + changeInfo;

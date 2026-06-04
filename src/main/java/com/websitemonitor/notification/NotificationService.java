@@ -12,30 +12,26 @@ import java.util.Map;
 
 public class NotificationService implements ChangeObserver {
 
-    private Map<String, ChannelHandler> channelHandlers = new HashMap<>();
+    private final Map<String, ChannelHandler> channelHandlers = new HashMap<>();
 
     public NotificationService() {
         channelHandlers.put("email", new EmailHandler());
-        channelHandlers.put("sms",   new SMSHandler());
-        channelHandlers.put("push",  new PushHandler());
+        channelHandlers.put("sms", new SMSHandler());
+        channelHandlers.put("push", new PushHandler());
     }
-
-    // ChangeObserver implementation - update
 
     @Override
-    public void update(Subscription sub, User owner, String changeInfo) {
-        sendNotification(owner, sub, changeInfo);
+    public void update(Subscription subscription, User owner, String changeInfo) {
+        sendNotification(owner, subscription, changeInfo);
     }
 
-    //Notification logic
-
-    public void sendNotification(User user, Subscription sub, String changeInfo) {
-        String message = formatMessage(sub.getUrl(), changeInfo);
-        ChannelHandler handler = channelHandlers.get(sub.getChannel());
+    public void sendNotification(User user, Subscription subscription, String changeInfo) {
+        String message = formatMessage(subscription.getUrl(), changeInfo);
+        ChannelHandler handler = channelHandlers.get(subscription.getChannel());
         if (handler != null) {
             handler.deliver(user, message);
         } else {
-            System.out.println("No handler for channel: " + sub.getChannel());
+            System.out.println("No handler for channel: " + subscription.getChannel());
         }
     }
 

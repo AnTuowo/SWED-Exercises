@@ -1,41 +1,57 @@
 package com.websitemonitor;
 
+import com.websitemonitor.comparator.ContentComparator;
+import com.websitemonitor.comparator.HTMLComparator;
+import com.websitemonitor.comparator.SizeComparator;
+import com.websitemonitor.comparator.TextComparator;
 import com.websitemonitor.controller.SubscriptionController;
 import com.websitemonitor.domain.Subscription;
 import com.websitemonitor.domain.User;
+import com.websitemonitor.monitor.ChangeDetector;
 import com.websitemonitor.monitor.WebsiteMonitor;
 import com.websitemonitor.notification.NotificationService;
 
 public class Main {
     public static void main(String[] args) {
-
-        // Create subject and observer
-        WebsiteMonitor monitor             = new WebsiteMonitor();
+        ChangeDetector changeDetector = new ChangeDetector(new TextComparator());
+        WebsiteMonitor monitor = new WebsiteMonitor(changeDetector);
         NotificationService notificationService = new NotificationService();
 
-        // Register the observer with the subject — no direct call dependency
         monitor.attachObserver(notificationService);
 
-        // Controller and domain setup
         SubscriptionController controller = new SubscriptionController(monitor);
-        User alice = new User("u1", "alice@example.com", "Alice");
+        User makuru = new User("u1", "mac@example.com", "Makuru");
+        User donarudo = new User("u2", "doi@example.com", "Donarudo");
 
-        Subscription s1 = controller.registerSubscription(alice, "https://example.com", "daily", "email");
-        Subscription s2 = controller.registerSubscription(alice, "https://news.com", "hourly", "sms");
+        controller.registerSubscription(makuru, "https://www.reuters.com", "1 minute", "email");
+        controller.registerSubscription(donarudo, "https://www.coindesk.com/price/bitcoin/", "5 minute", "sms");
 
+        runStrategyCheck(changeDetector, monitor, new TextComparator(), "--- Check with Text strategy ---");
+        runStrategyCheck(changeDetector, monitor, new SizeComparator(), "\n--- Check with Size strategy ---");
+        runStrategyCheck(changeDetector, monitor, new HTMLComparator(), "\n--- Check with HTML strategy ---");
 
-        System.out.println("--- Check 1 ---");
-        monitor.checkForUpdates();
+        // ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        // Runtime.getRuntime().addShutdownHook(new Thread(scheduler::shutdownNow));
 
-        // Add a second observer — e.g. a logger — with zero changes to WebsiteMonitor
-        monitor.attachObserver((sub, owner, info) ->System.out.println("LOG: change detected for " + owner.getName()+ " on " + sub.getUrl()));
+        // scheduler.scheduleAtFixedRate(() -> {
+        //     try {
+        //         System.out.println("--- Running website check ---");
+        //         monitor.checkForUpdates();
+        //     } catch (Exception e) {
+        //         System.err.println("Website check failed: " + e.getMessage());
+        //     }
+        // }, 0, 1, TimeUnit.MINUTES);
 
-        System.out.println("\n--- Check 2 (two observers) ---");
-        monitor.checkForUpdates();
+        // System.out.println("Website monitor is running in the background.");
+    }
 
-        // Remove the notification observer
-        monitor.detachObserver(notificationService);
-        System.out.println("\n--- Check 3 (logger only) ---");
+    private static void runStrategyCheck(
+            ChangeDetector changeDetector,
+            WebsiteMonitor monitor,
+            ContentComparator comparator,
+            String message) {
+        changeDetector.setComparator(comparator);
+        System.out.println(message);
         monitor.checkForUpdates();
     }
 }

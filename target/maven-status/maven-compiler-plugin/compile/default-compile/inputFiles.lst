@@ -9,6 +9,7 @@
 /workspaces/SWED-Exercises/src/main/java/com/websitemonitor/handler/EmailHandler.java
 /workspaces/SWED-Exercises/src/main/java/com/websitemonitor/handler/PushHandler.java
 /workspaces/SWED-Exercises/src/main/java/com/websitemonitor/handler/SMSHandler.java
+/workspaces/SWED-Exercises/src/main/java/com/websitemonitor/monitor/ChangeDetector.java
 /workspaces/SWED-Exercises/src/main/java/com/websitemonitor/monitor/WebsiteMonitor.java
 /workspaces/SWED-Exercises/src/main/java/com/websitemonitor/notification/ChannelHandler.java
 /workspaces/SWED-Exercises/src/main/java/com/websitemonitor/notification/NotificationService.java

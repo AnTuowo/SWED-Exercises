@@ -1,11 +1,12 @@
 package com.websitemonitor.observer;
 
+import com.websitemonitor.domain.Subscription;
+import com.websitemonitor.domain.User;
+
 public interface ChangeSubject {
-    void attachObserver(ChangeObserver observer); // attach
-    void detachObserver(ChangeObserver observer); // detach
-    void notifyObservers( // notify
-        com.websitemonitor.domain.Subscription subscription,
-        com.websitemonitor.domain.User owner,
-        String changeInfo
-    );
+    void attachObserver(ChangeObserver observer);
+
+    void detachObserver(ChangeObserver observer);
+
+    void notifyObservers(Subscription subscription, User owner, String changeInfo);
 }
